@@ -25,7 +25,7 @@ def get_top_tracks(token, time_range, limit):
     dic_res["album"] = item.get('album').get("name")
     dic_res["images"] = item.get('album').get("images")
     dic_res["popularity"] = item.get("popularity")
-    dic_res["duration"] = item.get("duration_ms") * 0.001 * 0.0166667
+    dic_res["duration"] = (item.get("duration_ms")/(1000*60))%60
     response_arr.append(dic_res)
   return response_arr
 
