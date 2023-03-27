@@ -13,7 +13,7 @@ status = Blueprint('status', __name__)
 @cross_origin(supports_credentials=True)
 def main():
     status_msg = {
-        "status": "operacional",
+        "status": "online",
         "timestamp": int(time.time()),
         "started": START_TIMESTAMP,
         "service": "api-tcc",
