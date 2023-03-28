@@ -5,10 +5,10 @@ from app.controllers import controller_artistis as controller
 
 artists = Blueprint('artists', __name__)
 
-@artists.route("", methods=["GET"])
+@artists.route("", methods=["POST"])
 @cross_origin(supports_credentials=True)
 def main():
-    if request.method == "GET":
+    if request.method == "POST":
         return controller.get_artists(request)
     
     return METHOD_NOT_DEFINED
