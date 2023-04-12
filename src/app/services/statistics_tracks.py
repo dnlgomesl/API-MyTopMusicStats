@@ -32,27 +32,31 @@ def get_top_tracks(token, time_range, limit):
   return response_arr
 
 def get_statistics_of_top_tracks(tracks):
-  albuns = {}
-  artists = {}
+  _albuns = {}
+  _artists = {}
   popularity = []
   duration = []
   for track in tracks:
 
     artist = track.get("artist")
-    if artist not in artists:
-      artists[artist] = 1
+    if artist not in _artists:
+      _artists[artist] = 1
     else:
-      artists[artist] = artists.get(artist) + 1
+      _artists[artist] = _artists.get(artist) + 1
     
     album = track.get("album")
-    if album not in albuns:
-      albuns[album] = 1
+    if album not in _albuns:
+      _albuns[album] = 1
     else:
-      albuns[album] = albuns.get(album) + 1
+      _albuns[album] = _albuns.get(album) + 1
 
 
     popularity.append(track.get("popularity"))
     duration.append(track.get("duration"))
+  
+  albuns = dict(sorted(_albuns.items(),  key=lambda x:x[1], reverse=True))
+  artists = dict(sorted(_artists.items(),  key=lambda x:x[1], reverse=True))
+
 
   response = {
       "albuns": albuns,

@@ -29,18 +29,21 @@ def get_top_artists(token, time_range, limit):
   return response_arr
 
 def get_statistics_of_top_artists(artists):
-  genres = {}
+  _genres = {}
   popularity = []
   for artist in artists:
 
-    _genres = artist.get("genres")
-    for genre in _genres:
-      if genre not in genres:
-        genres[genre] = 1
+    __genres = artist.get("genres")
+    for genre in __genres:
+      if genre not in _genres:
+        _genres[genre] = 1
       else:
-        genres[genre] = genres.get(genre) + 1
+        _genres[genre] = _genres.get(genre) + 1
     
     popularity.append(artist.get("popularity"))
+  
+  genres = dict(sorted(_genres.items(),  key=lambda x:x[1], reverse=True))
+    
 
   response = {
       "genres": genres,
