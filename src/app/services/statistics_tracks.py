@@ -28,6 +28,7 @@ def get_top_tracks(token, time_range, limit):
     seconds = int((item.get("duration_ms")/1000)%60)
     minutes = int((item.get("duration_ms")/(1000*60))%60)
     dic_res["duration"] = float(str(minutes) + "." + str(seconds))
+    dic_res["url"] = item.get("external_urls").get("spotify")
     response_arr.append(dic_res)
   return response_arr
 

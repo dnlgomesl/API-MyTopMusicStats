@@ -25,6 +25,7 @@ def get_top_artists(token, time_range, limit):
     dic_res["genres"] = item.get("genres")
     dic_res["images"] = item.get("images")
     dic_res["popularity"] = item.get("popularity")
+    dic_res["url"] = item.get("external_urls").get("spotify")
     response_arr.append(dic_res)
   return response_arr
 
