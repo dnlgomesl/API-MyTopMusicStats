@@ -1,9 +1,14 @@
 import requests
 import statistics
 
+from app.services.sorted import sort_arr_dict
+
 def get_statistics(token, time_range, limit, sort):
   top_arr = get_top_artists(token, time_range, limit)
   additional = get_statistics_of_top_artists(top_arr)
+
+  if sort:
+    top_arr = sort_arr_dict(top_arr, sort)
 
   return {"top": top_arr, "additional": additional}
   

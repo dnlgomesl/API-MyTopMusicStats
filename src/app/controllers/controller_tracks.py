@@ -8,8 +8,11 @@ def get_tracks(request):
         token = body["token"]
         time_range = body["range"]
         limit = body["limit"]
+        sort = None
+        if ("sort" in body):
+            sort = body["sort"]
 
-        tracks_info = get_statistics(token, time_range, limit)
+        tracks_info = get_statistics(token, time_range, limit, sort)
         return make_response(tracks_info, flask_status.HTTP_200_OK)
     except:
         return STANDARD_ERROR

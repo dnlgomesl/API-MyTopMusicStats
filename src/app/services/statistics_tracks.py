@@ -4,10 +4,14 @@ import sys
 import datetime
 
 from app.util import metrics_of_time
+from app.services.sorted import sort_arr_dict
 
-def get_statistics(token, time_range, limit):
+def get_statistics(token, time_range, limit, sort):
   top_arr = get_top_tracks(token, time_range, limit)
   additional = get_statistics_of_top_tracks(top_arr)
+
+  if sort:
+    top_arr = sort_arr_dict(top_arr, sort)
 
   return {"top": top_arr, "additional": additional}
 
