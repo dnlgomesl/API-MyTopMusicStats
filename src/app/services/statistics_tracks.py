@@ -1,5 +1,9 @@
 import requests
 import statistics
+import sys
+import datetime
+
+from app.util import metrics_of_time
 
 def get_statistics(token, time_range, limit):
   top_arr = get_top_tracks(token, time_range, limit)
@@ -25,6 +29,7 @@ def get_top_tracks(token, time_range, limit):
     dic_res["album"] = item.get('album').get("name")
     dic_res["images"] = item.get('album').get("images")
     dic_res["popularity"] = item.get("popularity")
+    dic_res["date"] = item.get("album").get("release_date")
     seconds = int((item.get("duration_ms")/1000)%60)
     minutes = int((item.get("duration_ms")/(1000*60))%60)
     dic_res["duration"] = float(str(minutes) + "." + str(seconds))
@@ -58,6 +63,7 @@ def get_statistics_of_top_tracks(tracks):
   albuns = dict(sorted(_albuns.items(),  key=lambda x:x[1], reverse=True))
   artists = dict(sorted(_artists.items(),  key=lambda x:x[1], reverse=True))
 
+  metrics_duration = metrics_of_time(duration)
 
   response = {
       "albuns": albuns,
@@ -67,11 +73,7 @@ def get_statistics_of_top_tracks(tracks):
         "mode": statistics.mode(popularity),
         "median": statistics.median(popularity)
       },
-      "duration": {
-        "mean": statistics.mean(duration),
-        "mode": statistics.mode(duration),
-        "median": statistics.median(duration)
-      }
+      "duration": metrics_duration
   }
 
   return response

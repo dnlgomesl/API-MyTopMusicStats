@@ -1,7 +1,7 @@
 import requests
 import statistics
 
-def get_statistics(token, time_range, limit):
+def get_statistics(token, time_range, limit, sort):
   top_arr = get_top_artists(token, time_range, limit)
   additional = get_statistics_of_top_artists(top_arr)
 

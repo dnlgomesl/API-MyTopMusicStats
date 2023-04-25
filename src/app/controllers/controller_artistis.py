@@ -8,8 +8,11 @@ def get_artists(request):
         token = body["token"]
         time_range = body["range"]
         limit = body["limit"]
-
-        artists_info = get_statistics(token, time_range, limit)
+        sort = None
+        if ("sort" in body):
+            sort = body["sort"]
+        
+        artists_info = get_statistics(token, time_range, limit, sort)
         return make_response(artists_info, flask_status.HTTP_200_OK)
     except:
         return STANDARD_ERROR
