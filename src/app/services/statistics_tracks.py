@@ -44,6 +44,7 @@ def get_top_tracks(token, time_range, limit):
 def get_statistics_of_top_tracks(tracks):
   _albuns = {}
   _artists = {}
+  _decades = {}
   popularity = []
   duration = []
   for track in tracks:
@@ -59,19 +60,27 @@ def get_statistics_of_top_tracks(tracks):
       _albuns[album] = 1
     else:
       _albuns[album] = _albuns.get(album) + 1
-
+    
+    date = int(track.get("date").split("-")[0])
+    decade = date - (date % 10)
+    if decade not in _decades:
+      _decades[decade] = 1
+    else:
+      _decades[decade] = _decades.get(decade) + 1
 
     popularity.append(track.get("popularity"))
     duration.append(track.get("duration"))
   
   albuns = dict(sorted(_albuns.items(),  key=lambda x:x[1], reverse=True))
   artists = dict(sorted(_artists.items(),  key=lambda x:x[1], reverse=True))
+  decades = dict(sorted(_decades.items(),  key=lambda x:x[1], reverse=True))
 
   metrics_duration = metrics_of_time(duration)
 
   response = {
       "albuns": albuns,
       "artists": artists,
+      "decades": decades,
       "popularity": {
         "mean": statistics.mean(popularity),
         "mode": statistics.mode(popularity),
