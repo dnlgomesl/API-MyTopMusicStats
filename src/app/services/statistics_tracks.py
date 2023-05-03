@@ -80,15 +80,16 @@ def get_statistics_of_top_tracks(tracks):
   decades = dict(sorted(_decades.items(),  key=lambda x:x[1], reverse=True))
   _decades_popularity = dict(sorted(_decades_popularity.items(),  key=lambda x:x[1], reverse=True))
 
-  decades_popularity = {}
+  decades_popularity = []
 
   for key in _decades_popularity.keys():
     popularity_decade = _decades_popularity.get(key)
-    decades_popularity[key] = {
+    decades_popularity.append({
+          "decade": key,
           "mean": statistics.mean(popularity_decade),
           "mode": statistics.mode(popularity_decade),
           "median": statistics.median(popularity_decade)
-    }
+    })
 
   metrics_duration = metrics_of_time(duration)
 
