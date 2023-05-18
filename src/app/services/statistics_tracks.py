@@ -15,35 +15,6 @@ def get_statistics(token, time_range, limit, sort):
 
   return {"top": top_arr, "additional": additional}
 
-def get_audio_features(id, dic_res, token):
-  headers = {
-        'Authorization': 'Bearer ' + token,
-        'Content-Type': 'application/json'
-  }
-  url = f'https://api.spotify.com/v1/audio-features/{id}'
-  response = requests.get(url, headers=headers).json()
-  response.pop('track_href')
-  response.pop('type')
-  response.pop('time_signature')
-  response.pop('analysis_url')
-  response.pop('uri')
-  response.pop('key')
-  response.pop('id')
-  response.pop('duration_ms')
-  response.pop('mode')
-  response.pop('loudness')
-  response.pop('speechiness')
-  response.pop('tempo')
-  res = dict()
-  keys = list(dic_res.keys()) + list(response.keys())
-  for k in keys:
-    if(dic_res.get(k)):
-      res[k] = dic_res.get(k)
-    else:
-      res[k] = response.get(k)
-  
-  return res
-
 def get_top_tracks(token, time_range, limit):
   headers = {
         'Authorization': 'Bearer ' + token,
@@ -67,7 +38,7 @@ def get_top_tracks(token, time_range, limit):
     minutes = int((item.get("duration_ms")/(1000*60))%60)
     dic_res["duration"] = float(str(minutes) + "." + str(seconds))
     dic_res["url"] = item.get("external_urls").get("spotify")
-    response_arr.append(get_audio_features(item.get("id"), dic_res, token))
+    response_arr.append(dic_res)
   return response_arr
 
 def get_statistics_of_top_tracks(tracks):
@@ -77,14 +48,8 @@ def get_statistics_of_top_tracks(tracks):
   _decades_popularity = {}
   popularity = []
   duration = []
-  danceability = []
-  energy = []
-  acousticness = []
-  instrumentalness = []
-  liveness = []
-  valence = []
   for track in tracks:
-
+    
     if not track.get("popularity"):
       track["popularity"] = 0
 
@@ -112,12 +77,6 @@ def get_statistics_of_top_tracks(tracks):
 
     popularity.append(track.get("popularity"))
     duration.append(track.get("duration"))
-    danceability.append(track.get("danceability"))
-    energy.append(track.get("energy"))
-    acousticness.append(track.get("acousticness"))
-    instrumentalness.append(track.get("instrumentalness"))
-    liveness.append(track.get("liveness"))
-    valence.append(track.get("valence"))
   
   albuns = dict(sorted(_albuns.items(),  key=lambda x:x[1], reverse=True))
   artists = dict(sorted(_artists.items(),  key=lambda x:x[1], reverse=True))
@@ -149,37 +108,7 @@ def get_statistics_of_top_tracks(tracks):
         "mode": statistics.mode(popularity),
         "median": statistics.median(popularity)
       },
-      "duration": metrics_duration,
-      "danceability": {
-        "mean": statistics.mean(danceability),
-        "mode": statistics.mode(danceability),
-        "median": statistics.median(danceability)
-      },
-      "acousticness": {
-        "mean": statistics.mean(acousticness),
-        "mode": statistics.mode(acousticness),
-        "median": statistics.median(acousticness)
-      },
-      "energy": {
-        "mean": statistics.mean(energy),
-        "mode": statistics.mode(energy),
-        "median": statistics.median(energy)
-      },
-      "instrumentalness": {
-        "mean": statistics.mean(instrumentalness),
-        "mode": statistics.mode(instrumentalness),
-        "median": statistics.median(instrumentalness)
-      },
-      "liveness": {
-        "mean": statistics.mean(liveness),
-        "mode": statistics.mode(liveness),
-        "median": statistics.median(liveness)
-      },
-      "valence": {
-        "mean": statistics.mean(valence),
-        "mode": statistics.mode(valence),
-        "median": statistics.median(valence)
-      }
+      "duration": metrics_duration
   }
 
   return response
