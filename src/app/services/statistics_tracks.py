@@ -85,6 +85,9 @@ def get_statistics_of_top_tracks(tracks):
   valence = []
   for track in tracks:
 
+    if not track.get("popularity"):
+      track["popularity"] = 0
+
     artist = track.get("artist")
     if artist not in _artists:
       _artists[artist] = 1
