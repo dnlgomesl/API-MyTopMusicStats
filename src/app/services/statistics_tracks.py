@@ -7,13 +7,44 @@ from app.util import metrics_of_time
 from app.services.sorted import sort_arr_dict
 
 def get_statistics(token, time_range, limit, sort):
-  top_arr = get_top_tracks(token, time_range, limit)
+  top_arr, features = get_top_tracks(token, time_range, limit)
   additional = get_statistics_of_top_tracks(top_arr)
 
   if sort:
     top_arr = sort_arr_dict(top_arr, sort)
 
-  return {"top": top_arr, "additional": additional}
+  return {"top": top_arr, "additional": additional, "features": features}
+
+def get_audio_features(ids, token, tracks):
+  headers = {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+  }
+
+  url = f"https://api.spotify.com/v1/audio-features?ids={ids}"
+
+  response = requests.get(url, headers=headers)
+  _audios_features = response.json().get("audio_features")
+
+  audios_features = {
+      "acousticness": dict(),
+      "danceability": dict(),
+      "energy": dict(),
+      "instrumentalness": dict(),
+      "liveness": dict(),
+      "valence": dict()
+  }
+
+  for audio_features in _audios_features:
+    for track in tracks:
+      if (audio_features.get("id") == track.get("id")):
+        audios_features.get("acousticness")[track.get("music")] = audio_features.get("acousticness")
+        audios_features.get("danceability")[track.get("music")] = audio_features.get("danceability")
+        audios_features.get("energy")[track.get("music")] = audio_features.get("energy")
+        audios_features.get("instrumentalness")[track.get("music")] = audio_features.get("instrumentalness")
+        audios_features.get("liveness")[track.get("music")] = audio_features.get("liveness")
+        audios_features.get("valence")[track.get("music")] = audio_features.get("valence")
+  return audios_features
 
 def get_top_tracks(token, time_range, limit):
   headers = {
@@ -26,6 +57,7 @@ def get_top_tracks(token, time_range, limit):
   items = response.json().get("items")
 
   response_arr = []
+  ids = ""
   for item in items:
     dic_res = {}
     dic_res["music"] = item.get("name")
@@ -38,8 +70,13 @@ def get_top_tracks(token, time_range, limit):
     minutes = int((item.get("duration_ms")/(1000*60))%60)
     dic_res["duration"] = float(str(minutes) + "." + str(seconds))
     dic_res["url"] = item.get("external_urls").get("spotify")
+    dic_res["id"] = item.get("id")
     response_arr.append(dic_res)
-  return response_arr
+    ids += item.get("id") + "%"
+  ids = ids[:-1]
+  ids = ids.replace("%", "%2C")
+  features = get_audio_features(ids, token, response_arr)
+  return response_arr, features
 
 def get_statistics_of_top_tracks(tracks):
   _albuns = {}
