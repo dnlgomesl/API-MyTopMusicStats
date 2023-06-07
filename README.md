@@ -7,7 +7,7 @@ O My Top Music Stats é um projeto de Trabalho de Conclusão de Curso que visa m
 ## Endpoints da API
 A seguir, estão listados os endpoints disponíveis na API:
 
-### 1 Endpoint de Status
+### 1. Endpoint de Status
 
 Endpoint: GET /status/
 
