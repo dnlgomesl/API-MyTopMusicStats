@@ -1403,12 +1403,28 @@ Os valores possíveis para `limit` vão de 1 a 50.
 
 ```
 ## Como executar a API?
-Para executar a API precisa ter o Docker instalado. Após instalar o Docker faça:
+
+1. Faça o clone deste repositório para o seu ambiente local.
+
+```bash
+git clone https://github.com/dnlgomesl/API-MyTopMusicStats.git
+```
+
+2. Navegue até o diretório do projeto.
+
+```bash
+cd API-MyTopMusicStats
+```
+3. Intale o Docker.
+
+Siga o tutorial do próprio Docker que está nesse [link](https://docs.docker.com/get-docker/).
+
+4. Após instalar o Docker faça o build.
 
 ```bash
 sudo docker build . -f Dockerfile --tag=api-tcc
 ```
-E após isso:
+5. Após o build rode a api.
 ```bash
 sudo docker run -d --name tcc-container -p 8000:80 api-tcc
 ```
