@@ -1415,7 +1415,7 @@ git clone https://github.com/dnlgomesl/API-MyTopMusicStats.git
 ```bash
 cd API-MyTopMusicStats
 ```
-3. Intale o Docker.
+3. Instale o Docker.
 
 Siga o tutorial do próprio Docker que está nesse [link](https://docs.docker.com/get-docker/).
 
