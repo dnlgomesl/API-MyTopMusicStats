@@ -1,5 +1,8 @@
 
-A API oferece os seguintes endpoints:
+# API - My Top Músic Stats
+*URL* = https://18.191.97.102.nip.io
+
+O My Top Music Stats é um projeto de Trabalho de Conclusão de Curso que visa mostrar para você que usa o Spotify um pequeno dashboard com informações referente ao que você vem escutando.
 
 ## Endpoints da API
 A seguir, estão listados os endpoints disponíveis na API:
