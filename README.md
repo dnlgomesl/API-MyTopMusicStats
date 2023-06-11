@@ -39,7 +39,7 @@ Esse endpoint retorna a listagem do artistas mais ouvidos no intervalo de tempo 
     "token": "<auth_token>",
     "range": "medium_term",
     "limit": "20",
-		"sort": "popularity"
+    "sort": "popularity"
 }
 ```
 
@@ -641,7 +641,7 @@ Esse endpoint retorna a listagem das músicas mais ouvidas no intervalo de tempo
     "token": "<auth_token>",
     "range": "long_term",
     "limit": "20",
-		"sort": "duration"
+    "sort": "duration"
 }
 ```
 
